@@ -1,4 +1,4 @@
-/* ✅ 웹 폰트 적용 (E 글자 깨짐 방지 및 대체 폰트 추가) */
+/* 웹 폰트 적용 */
 @font-face {
     font-family: 'MyCustomFont'; /* 사용자 정의 폰트 이름 지정 */
     src: url('fonts/NanumBbangGuNiMamSonGeurSsi.woff') format('woff'), /* 웹폰트 적용 (woff 포맷) */
@@ -7,32 +7,33 @@
     font-style: normal; /* 기본 글꼴 스타일 설정 */
 }
 
-/* ✅ 전체 페이지 스타일 (기본 폰트 설정, 배경색 적용) */
+/* 전체 페이지 스타일 (기본 폰트 설정, 배경색 적용) */
 body {
-    font-family: 'MyCustomFont', Arial, sans-serif; /* 기본 폰트 적용 (사용자 정의 폰트가 없을 경우 Arial 적용) */
+    font-family: 'MyCustomFont', Arial, sans-serif; 
+    /* MyCustomFont 적용, 없으면 Arial 적용, 없으면 운영체제 기본 sans-serif 적용 */
     background-color: #fff5db; /* 배경 색상 연한 베이지 */
     text-align: center; /* 텍스트를 중앙 정렬 */
-    margin: 0; /* 기본 여백 제거 */
+    margin: 0; /* 기본 외부 여백 제거, 다른 요소와의 거리 */
     color: #595959; /* 텍스트 색상 회색 */
     font-size: 22px; /* 전체 텍스트 크기 증가 */
 }
 
-/* ✅ 네비게이션 스타일 (가로 정렬 & 리스트 점 제거) */
+/* 네비게이션 스타일 (가로 정렬 & 리스트 점 제거) */
 nav ul {
     list-style: none; /* 기본 리스트 점 제거 */
-    padding: 0; /* 기본 padding 제거 */
-    display: flex; /* 리스트 항목을 가로 정렬 (기본적으로 세로로 배치됨) */
+    padding: 0; /* 기본 padding, 안쪽 여백 제거, 콘텐츠와 테두리 사이 */
+    display: flex; /* 리스트 항목을 가로 정렬, 세로는 flex-direction: column */
     justify-content: center; /* 메뉴 항목을 중앙 정렬 */
     align-items: center; /* 메뉴 항목을 수직 정렬 */
     gap: 30px; /* 각 메뉴 항목 사이의 간격 추가 */
 }
 
-/* ✅ 네비게이션 메뉴 항목 스타일 */
+/* 네비게이션 메뉴 항목 스타일 */
 nav ul li {
-    display: inline; /* 리스트 항목을 가로 정렬 */
+    display: inline; /* 리스트 항목을 가로 정렬, 세로는 block */
 }
 
-/* ✅ 네비게이션 링크 스타일 */
+/* 네비게이션 링크 스타일 */
 nav a {
     text-decoration: none; /* 기본 링크 밑줄 제거 */
     color: #595959; /* 글자 색상 지정 */
@@ -44,40 +45,30 @@ nav a {
     transition: border-bottom 0.3s ease-in-out; /* 부드러운 밑줄 애니메이션 효과 */
 }
 
-/* ✅ 네비게이션 링크에 마우스를 올렸을 때 */
+/* 네비게이션 링크에 마우스를 올렸을 때 */
 nav a:hover {
     border-bottom: 2px solid #595959; /* 마우스 오버 시 밑줄 표시 */
 }
 
-/* ✅ 현재 선택된 메뉴 (active 클래스 적용) */
+/* 현재 선택된 메뉴 (active 클래스 적용) */
 nav a.active {
     font-weight: bold; /* 글자 굵게 */
     border-bottom: 2px solid #595959; /* 활성화된 메뉴에 밑줄 표시 */
 }
 
-/* ✅ 혹시 글자가 세로로 찌그러졌다면 강제 가로 정렬 */
-nav {
-    writing-mode: horizontal-tb !important; /* 강제적으로 가로 정렬 적용 */
-}
-
-/* ✅ 제목 스타일 */
+/* 제목 스타일 */
 h1 {
     font-size: 36px; /* 제목 크기 조정 */
 }
 
-/* ✅ 특정 글자만 다른 폰트 적용 (E 깨짐 방지) */
-.special-e {
-    font-family: Arial, sans-serif !important; /* 특정 글자만 Arial 적용 */
-}
-
-/* ✅ 헤더 스타일 (배경 색상 및 크기 조정) */
+/* 헤더 스타일 (배경 색상 및 크기 조정) */
 header {
     background-color: #c0e0ef; /* 연한 하늘색 배경 */
     padding: 20px; /* 내부 여백 설정 */
     font-size: 24px; /* 글자 크기 조정 */
 }
 
-/* ✅ 홈 페이지 섹션 스타일 */
+/* 홈 페이지 섹션 스타일 */
 .home-section {
     display: flex; /* 요소를 가로 정렬 */
     justify-content: center; /* 중앙 정렬 */
@@ -85,7 +76,7 @@ header {
     height: 80vh; /* 섹션 높이를 화면의 80%로 설정 */
 }
 
-/* ✅ 홈 컨테이너: 이미지 왼쪽, 텍스트 오른쪽 배치 */
+/* 홈 컨테이너: 이미지 왼쪽, 텍스트 오른쪽 배치 */
 .home-container {
     display: flex; /* 내부 요소를 가로 정렬 */
     align-items: center; /* 수직 정렬 */
@@ -96,7 +87,7 @@ header {
     margin: auto; /* 가운데 정렬 */
 }
 
-/* ✅ 프로필 이미지 스타일 */
+/* 프로필 이미지 스타일 */
 .profile-img {
     width: 280px; /* 가로 크기 */
     height: auto; /* 높이를 비율에 맞게 자동 조정 */
@@ -104,14 +95,14 @@ header {
     margin-left: 20px; /* 왼쪽 여백 추가 */
 }
 
-/* ✅ 소개 텍스트 스타일 */
+/* 소개 텍스트 스타일 */
 .intro-text {
     text-align: left; /* 왼쪽 정렬 */
     flex: 1; /* 남은 공간을 차지하도록 설정 */
     max-width: 500px; /* 최대 너비 설정 */
 }
 
-/* ✅ 방명록 섹션 스타일 */
+/* 방명록 섹션 스타일 */
 .guestbook-section {
     text-align: center; /* 텍스트 중앙 정렬 */
     margin-top: 40px; /* 위쪽 여백 */
@@ -120,7 +111,7 @@ header {
     margin-right: auto;
 }
 
-/* ✅ 입력창과 버튼을 가로 정렬하고 너비 조정 */
+/* 입력창과 버튼을 가로 정렬하고 너비 조정 */
 .guestbook-form {
     display: flex; /* 입력창과 버튼을 가로 배치 */
     justify-content: space-between; /* 양쪽 정렬 */
@@ -129,7 +120,7 @@ header {
     gap: 10px; /* 간격 추가 */
 }
 
-/* ✅ 방명록 입력창 스타일 */
+/* 방명록 입력창 스타일 */
 textarea {
     flex: 1; /* 남은 공간을 자동으로 차지 */
     height: 100px; /* 입력창 높이 설정 */
@@ -141,7 +132,7 @@ textarea {
     font-family: 'MyCustomFont', sans-serif; /* 폰트 적용 */
 }
 
-/* ✅ 방명록 버튼 스타일 */
+/* 방명록 버튼 스타일 */
 button {
     background-color: #8ecae6; /* 파란색 배경 */
     border: none; /* 기본 테두리 제거 */
@@ -156,7 +147,7 @@ button {
     font-family: 'MyCustomFont', sans-serif; /* 폰트 적용 */
 }
 
-/* ✅ 방명록 목록 스타일 */
+/* 방명록 목록 스타일 */
 #guestbookList {
     list-style: none; /* 기본 리스트 스타일 제거 */
     text-align: left; /* 텍스트 왼쪽 정렬 */
@@ -165,6 +156,8 @@ button {
     padding: 0;
 }
 
+
+/* 방명록 목록 내부 li 스타일 */
 #guestbookList li {
     background: #ffffff; /* 배경색 */
     padding: 15px; /* 내부 여백 */
@@ -175,7 +168,7 @@ button {
     font-size: 22px; /* 글자 크기 */
 }
 
-/* ✅ 드라마 섹션: 전체 중앙 정렬 */
+/* 드라마 섹션: 전체 중앙 정렬 */
 .drama-section {
     display: flex; /* 내부 요소 정렬을 위해 flex 사용 */
     flex-direction: column; /* 요소를 세로 방향으로 배치 */
@@ -184,7 +177,7 @@ button {
     padding-bottom: 100px; /* 아래쪽 여백 추가 */
 }
 
-/* ✅ 드라마 컨테이너: 사진 왼쪽, 텍스트 오른쪽 */
+/* 드라마 컨테이너: 사진 왼쪽, 텍스트 오른쪽 */
 .drama-container {
     display: flex; /* 내부 요소를 가로 정렬 */
     align-items: center; /* 요소를 세로 정렬 */
@@ -197,14 +190,14 @@ button {
     margin: 20px auto; /* 💡 가운데 정렬을 위해 margin: auto; 적용 */
 }
 
-/* ✅ 드라마 이미지: 왼쪽 배치 */
+/* 드라마 이미지: 왼쪽 배치 */
 .drama-img {
     width: 250px; /* 이미지 크기 설정 */
     height: auto; /* 원본 비율 유지 */
     flex-shrink: 0; /* 이미지 크기 고정 */
 }
 
-/* ✅ 드라마 정보: 오른쪽 배치 */
+/* 드라마 정보: 오른쪽 배치 */
 .drama-info {
     text-align: left; /* 텍스트를 왼쪽 정렬 */
     flex: 1; /* 남은 공간을 차지하도록 설정 */

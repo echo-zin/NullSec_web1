@@ -1,37 +1,63 @@
-<!DOCTYPE html> <!-- HTML5 문서임을 선언 -->
-<html lang="ko"> <!-- HTML 문서의 기본 언어를 한국어(ko)로 설정 -->
+<!DOCTYPE html>
+<html lang="ko"> <!-- 기본 언어를 한국어(ko)로 설정 -->
 <head>
-    <meta charset="UTF-8"> <!-- 문자의 인코딩을 UTF-8로 설정 (한글 깨짐 방지) -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 반응형 웹을 위한 설정 (모바일에서 화면 크기 자동 조정) -->
-    <title>zinuuei BLOG - home</title> <!-- 브라우저 탭에 표시될 제목을 설정 -->
-    <link rel="stylesheet" href="styles.css"> <!-- CSS 스타일을 적용하기 위해 외부 파일 연결 -->
+    <meta charset="UTF-8"> 
+    <!-- 문자의 인코딩을 UTF-8로 설정 UTF-8은 표준 인코딩 방식, 거의 모든 언어 가능 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <!-- 반응형 웹을 위한 설정 (모바일에서 화면 크기 자동 조정) -->
+    <!-- meta name ="viewport" : 
+    웹페이지가 여러 기기에서 화면 크기에 맞게 보이도록 조정하는 설정 -->
+    <!-- width=device-width : 화면 너비를 기기 너비에 맞춤 -->
+    <!-- initial-scale=1.0" : 초기 비율을 기본 크기로 보여줌 (1.0 == 100%) -->
+    <title>zinuuei BLOG - home</title> <!-- 브라우저 탭에 표시될 제목 -->
+    <link rel="stylesheet" href="styles.css"> 
+    <!-- CSS 스타일을 적용하기 위해 외부 파일 연결 -->
+    <!-- link : 현재 html문서와 외부 리소스를 연결
+         rel : 현재 문서와 연결된 파일의 관계를 정의, 
+         이걸 스타일시트로 정의 해야 html이 이 파일을 css로 인식하고 스타일을 적용함
+         href : 하이퍼링크, css의 경로 지정 -->
 </head>
 <body class="home"> <!-- body에 home 클래스를 추가하여 스타일을 적용 가능하게 만듦 -->
-
-    <header> <!-- 웹사이트의 헤더 영역 -->
-        <h1>zinuuei BLOG</h1> <!-- 블로그의 제목 (h1 태그는 가장 중요한 제목) -->
-        <nav> <!-- 내비게이션(메뉴) 역할을 하는 태그 -->
-            <ul> <!-- 리스트 목록을 만들기 위한 ul(unordered list) 태그 -->
-                <li> <!-- 리스트 항목 -->
-                    <a href="drama.html">취미</a> <!-- a(anchor) 태그: 클릭 시 drama.html 페이지로 이동 -->
+<!-- calss : css나 js에서 특정 요소를 선택할 수 있도록 하는 역할
+     여러 html 요소가 동일한 클래스를 사용할 수 있음, 
+     보통 css에서 동일한 스타일을 적용하게 할 때 많이 사용 -->
+    <header>
+        <h1>zinuuei BLOG</h1> <!-- 블로그 제목, h1은 큰 제목 사이즈, 
+                               숫자가 커질수록 크기는 작아짐 -->
+        <nav> <!-- 메뉴 역할을 하는 태그, 
+                   다른 페이지로 이동하거나 사이트 내 탐색 링크 포함 -->
+            <ul> <!-- 순서 없는 리스트 목록을 만들기 위한 ul(unordered list) 태그
+			            "- 내용" 이런식으로 앞에 점이 생기지만 css에서 제거 가능 -->
+                <li> <!-- 리스트의 각 항목 정의 -->
+                    <a href="drama.html">취미</a> 
+                    <!-- a(anchor) 태그: 클릭 시 drama.html 페이지로 이동
+                    얘도 점 생기고 css로 지울 수 있는 건 마찬가지 -->
                 </li>
                 <li>
-                    <a href="index.html" class="active">홈</a> <!-- 현재 페이지임을 표시하기 위해 class="active" 추가 -->
+                    <a href="index.html" class="active">홈</a> 
+                    <!-- 현재 페이지임을 표시하기 위해 class="active" 추가 -->
                 </li>
                 <li>
-                    <a href="guestbook.html">방명록</a> <!-- guestbook.html 페이지로 이동하는 링크 -->
+                    <a href="guestbook.html">방명록</a> 
+                    <!-- guestbook.html 페이지로 이동하는 링크 -->
                 </li>
             </ul>
         </nav>
     </header>
 
-    <section class="home-section"> <!-- 주요 컨텐츠를 감싸는 section 태그, home-section 클래스를 추가하여 CSS 적용 가능 -->
-        <div class="home-container"> <!-- 내용을 정리하고 스타일을 적용할 컨테이너 div -->
-            <img src="image/증명사진2.jpg" alt="프로필 사진" class="profile-img"> <!-- img 태그: 이미지를 표시, alt 속성은 이미지가 로드되지 않을 경우 대체 텍스트 제공 -->
-            <div class="intro-text"> <!-- 소개 텍스트를 감싸는 div -->
-                <h3> <!-- h3 태그는 제목을 표시할 때 사용 -->
-                    이름 : 이유진<br> <!-- <br> 태그는 줄바꿈을 의미 -->
-                    취미 : 일드, 애니 보기 <br><br> <!-- <br><br>을 사용해 두 줄 띄우기 -->
+    <section class="home-section"> <!-- section : 주제별로 그룹화한 콘텐츠, 
+                                    home-section 클래스를 추가하여 CSS 적용 가능 -->
+        <div class="home-container"> 
+        <!-- container : 콘텐츠나 레이아웃에 아무런 영향을 주지 않고, 
+             단지 다른 요소들을 묶어 관리하기 편하게 만드는 역할 -->
+        <!-- div : 블록 레벨의 컨테이너 요소 -->
+            <img src="image/증명사진2.jpg" alt="프로필 사진" class="profile-img"> 
+            <!-- img 태그: 이미지를 표시, 
+            alt : 이미지가 로드되지 않을 경우 대체 텍스트 제공 -->
+            <div class="intro-text"> 
+                <h3> <!-- 보통 제목에 사용하는데 그냥 폰트 좀 크고 굵게 하려고 사용 -->
+                    이름 : 이유진<br> <!-- <br> 줄바꿈을 의미 -->
+                    취미 : 일드, 애니 보기 <br><br>
                     안녕하세요! 저의 취미 블로그를 개발했습니다. <br>
                     방명록 하나 남겨놓고 가세요 ~ !
                 </h3>
