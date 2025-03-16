@@ -1,0 +1,43 @@
+<!DOCTYPE html> <!-- HTML5 문서임을 선언 -->
+<html lang="ko"> <!-- HTML 문서의 기본 언어를 한국어(ko)로 설정 -->
+<head>
+    <meta charset="UTF-8"> <!-- 문자의 인코딩을 UTF-8로 설정 (한글 깨짐 방지) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 반응형 웹을 위한 설정 (모바일에서 화면 크기 자동 조정) -->
+    <title>zinuuei BLOG - home</title> <!-- 브라우저 탭에 표시될 제목을 설정 -->
+    <link rel="stylesheet" href="styles.css"> <!-- CSS 스타일을 적용하기 위해 외부 파일 연결 -->
+</head>
+<body class="home"> <!-- body에 home 클래스를 추가하여 스타일을 적용 가능하게 만듦 -->
+
+    <header> <!-- 웹사이트의 헤더 영역 -->
+        <h1>zinuuei BLOG</h1> <!-- 블로그의 제목 (h1 태그는 가장 중요한 제목) -->
+        <nav> <!-- 내비게이션(메뉴) 역할을 하는 태그 -->
+            <ul> <!-- 리스트 목록을 만들기 위한 ul(unordered list) 태그 -->
+                <li> <!-- 리스트 항목 -->
+                    <a href="drama.html">취미</a> <!-- a(anchor) 태그: 클릭 시 drama.html 페이지로 이동 -->
+                </li>
+                <li>
+                    <a href="index.html" class="active">홈</a> <!-- 현재 페이지임을 표시하기 위해 class="active" 추가 -->
+                </li>
+                <li>
+                    <a href="guestbook.html">방명록</a> <!-- guestbook.html 페이지로 이동하는 링크 -->
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="home-section"> <!-- 주요 컨텐츠를 감싸는 section 태그, home-section 클래스를 추가하여 CSS 적용 가능 -->
+        <div class="home-container"> <!-- 내용을 정리하고 스타일을 적용할 컨테이너 div -->
+            <img src="image/증명사진2.jpg" alt="프로필 사진" class="profile-img"> <!-- img 태그: 이미지를 표시, alt 속성은 이미지가 로드되지 않을 경우 대체 텍스트 제공 -->
+            <div class="intro-text"> <!-- 소개 텍스트를 감싸는 div -->
+                <h3> <!-- h3 태그는 제목을 표시할 때 사용 -->
+                    이름 : 이유진<br> <!-- <br> 태그는 줄바꿈을 의미 -->
+                    취미 : 일드, 애니 보기 <br><br> <!-- <br><br>을 사용해 두 줄 띄우기 -->
+                    안녕하세요! 저의 취미 블로그를 개발했습니다. <br>
+                    방명록 하나 남겨놓고 가세요 ~ !
+                </h3>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
