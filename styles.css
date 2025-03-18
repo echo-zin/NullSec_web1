@@ -118,7 +118,7 @@ header {
 
 /* 방명록 섹션 스타일 (너비 확장) */
 .guestbook-section {
-    text-align: center; /* 텍스트를 왼쪽 정렬 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
     margin-top: 40px; /* 위쪽 여백 설정 */
     max-width: 900px; /* 최대 너비 설정 */
     width: 90%; /* 부모 요소의 90% 차지하도록 설정 */
