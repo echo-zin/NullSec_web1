@@ -24,6 +24,6 @@ window.onload = function() {
         let newEntry = document.createElement("li"); // 새로운 리스트 항목(li 태그) 생성
         newEntry.textContent = entry; // 저장된 데이터를 li 요소의 텍스트로 설정
         list.appendChild(newEntry); // 방명록 목록(ul)에 추가
-        //깃 수정 때문에 남기는 주석
+        // 깃 수정 때문에 남기는 주석
     });
 };
