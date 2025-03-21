@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<!-- HTML 문서임을 명시, lang 속성은 문서의 언어를 한국어로 설정 -->
+<head>
+    <meta charset="UTF-8"> <!-- 인코딩을 UTF-8로 설정-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 뷰포트 설정, 화면의 너비에 맞춰 페이지 조정, 초기 확대 배율은 100% -->
+    <title>zinuuei BLOG</title> <!-- 브라우저 탭에 표시 -->
+    <link rel="stylesheet" href="styles.css"> <!-- 외부 CSS 파일 불러옴-->
+</head>
+<body>
+    <header>
+        <h1>zinuuei BLOG</h1> <!-- 블로그의 제목 -->
+        <nav>
+            <!-- 메뉴뉴 -->
+            <ul>
+                <li><a href="drama.html">드라마 소개</a></li>
+                <!-- 드라마 소개 페이지로 이동 -->
+                <li><a href="index.html">홈</a></li>
+                <!-- 홈 페이지로 이동 -->
+                <li><a href="recommend.html" class="active">드라마 추천</a></li>
+                <!-- 드라마 추천 페이지로 이동, class="active"로 현재 페이지를 나타내는 스타일 적용 -->
+            </ul>
+        </nav>
+    </header>
+
+    <section class="form-container">
+        <!-- 새로운 드라마 추천을 위한 입력 폼을 포함하는 섹션 -->
+        <h2>새로운 드라마 추천</h2>
+        <!-- 섹션의 제목을 표시 -->
+        <input type="text" id="dramaTitle" placeholder="드라마 제목 입력">
+        <!-- 드라마 제목을 입력할 수 있는 텍스트 필드
+             id 속성을 통해 JavaScript에서 접근할 수 있음
+             placeholder는 입력 필드에 대한 안내 메시지 표시 -->
+        <textarea id="dramaContent" placeholder="추천 내용을 입력하세요."></textarea>
+        <!-- 추천 내용을 입력할 수 있는 텍스트 영역
+             id 속성을 통해 JavaScript에서 접근할 수 있음
+             placeholder는 입력 필드에 대한 안내 메시지 표시 -->
+        <button onclick="addDrama()">등록</button>
+        <!-- 드라마 등록 버튼
+             클릭 시 addDrama() 함수를 호출하여 드라마를 추가함 -->
+    </section>
+
+    <script src="/script.js" defer></script>
+    <!-- 외부 JavaScript 파일 링크 
+         script.js는 페이지의 동작을 정의, defer 속성은 HTML 문서를 완전히 불러온 후 스크립트 실행 -->
+</body>
+</html>
