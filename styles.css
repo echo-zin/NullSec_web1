@@ -1,398 +1,447 @@
-/* 로컬 폰트 적용 (E 깨짐 방지 + 대체 폰트 추가) */
-@font-face {
-    font-family: 'MyCustomFont'; /* 사용자 정의 폰트 이름 설정 */
-    src: url('fonts/NanumBbangGuNiMamSonGeurSsi.woff') format('woff'), /* WOFF 형식의 폰트 파일 경로 설정 */
-         url('fonts/NanumBbangGuNiMamSonGeurSsi.ttf') format('truetype'); /* TrueType 형식의 폰트 파일 경로 설정 */
-    font-weight: normal; /* 기본 폰트 두께 설정 */
-    font-style: normal; /* 기본 폰트 스타일 설정 */
-}
-
-/* 전체 페이지 폰트 적용 */
+/* ------------------------------------
+   기본 바디 / 헤더
+------------------------------------- */
 body {
-    font-family: 'MyCustomFont', Arial, sans-serif; /* 기본 폰트로 사용자 정의 폰트 및 대체 폰트 설정 */
-    background-color: #fff5db; /* 페이지 배경색 설정 */
-    text-align: center; /* 텍스트 가운데 정렬 */
-    margin: 0; /* 기본 마진 제거 */
-    color: #595959; /* 기본 텍스트 색상 설정 */
-    font-size: 22px; /* 기본 글씨 크기 증가 */
+  margin: 0;
+  padding: 0;
+  background-color: #fffef2;
+  color: #595959;
 }
 
-
-/* 폼 요소에도 동일한 폰트 적용 */
-input, select, button, textarea {
-    font-family: 'MyCustomFont', Arial, sans-serif !important;
-    color: #595959; /* 기본 텍스트 색상 설정 */
-    font-size: 26px; /* 기본 글씨 크기 증가 */
+h1, h2 {
+  text-align: center;
+  margin: 20px 0;
 }
 
-/* 네비게이션 스타일 (가로 정렬 & 리스트 점 제거) */
-nav ul {
-    list-style: none; /* 리스트 항목의 점 제거 */
-    padding: 0; /* 기본 패딩 제거 */
-    display: flex; /* 네비게이션 항목을 가로 정렬 */
-    justify-content: center; /* 가운데 정렬 */
-    align-items: center; /* 세로 정렬 */
-    gap: 30px; /* 메뉴 항목 사이 여백 추가 */
+/* 상단 헤더 (모든 페이지 공통) */
+.top-header, header {
+  background-color: #f0f0f0;
+  padding: 20px 40px;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
-/* 네비게이션 링크 스타일 */
-nav ul li {
-    display: inline; /* 리스트 항목을 인라인으로 설정하여 세로 정렬 방지 */
+.top-header h1, header h1 {
+  font-size: 36px;
+  margin: 0;
+  cursor: pointer;
+  flex: 1;
 }
 
-nav a {
-    text-decoration: none; /* 링크의 기본 밑줄 제거 */
-    color: #595959; /* 링크 텍스트 색상 설정 */
-    font-size: 24px; /* 링크 텍스트 크기 설정 */
-    font-family: 'MyCustomFont', sans-serif; /* 사용자 정의 폰트 적용 */
-    display: inline-block; /* 링크를 인라인 블록으로 설정하여 가로 정렬 유지 */
-    padding: 5px 10px; /* 클릭 영역을 확장하기 위한 여백 설정 */
-    border-bottom: 2px solid transparent; /* 기본 하단 테두리 투명으로 설정 */
-    transition: border-bottom 0.3s ease-in-out; /* 하단 강조 효과의 부드러운 전환 설정 */
+/* ------------------------------------
+   메인 컨테이너 (recommend.html)
+------------------------------------- */
+.main-container {
+  display: flex;
+  gap: 30px;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: flex-start;
 }
 
-/* 메뉴에 마우스 올렸을 때 */
-nav a:hover {
-    border-bottom: 2px solid #595959; /* 마우스 오버 시 밑줄 강조 */
+/* 왼쪽 게시판 */
+.drama-board {
+  flex: 1;
 }
 
-/* 현재 선택된 메뉴 (bold 처리) */
-nav a.active {
-    font-weight: bold; /* 선택된 메뉴 글씨를 굵게 설정 */
-    border-bottom: 2px solid #595959; /* 선택된 메뉴에 밑줄 추가 */
-}
-
-/* 글자가 세로로 찌그러졌다면? */
-nav {
-    writing-mode: horizontal-tb !important; /* 텍스트 가로 정렬 강제 적용 */
-}
-
-/* 제목 스타일 */
-h1 {
-    font-size: 36px; /* 제목 글씨 크기 설정 */
-}
-
-/* 특정 글자만 다른 폰트 적용 ("E" 깨짐 방지) */
-.special-e {
-    font-family: Arial, sans-serif !important; /* 특정 글자에 Arial 폰트 적용하여 깨짐 방지 */
-}
-
-/* 구름 배경 */
-header {
-    background-color: #c0e0ef; /* 헤더 배경색 설정 */
-    padding: 20px; /* 헤더 내부 여백 설정 */
-    font-size: 24px; /* 헤더 텍스트 크기 설정 */
-}
-
-/* 홈 섹션 스타일 */
-.home-section {
-    display: flex; /* 홈 섹션을 플렉스 박스로 설정 */
-    justify-content: center; /* 가운데 정렬 */
-    align-items: center; /* 세로 정렬 */
-    height: 80vh; /* 화면 높이의 80%로 설정 */
-}
-
-/* 홈 컨테이너: 이미지 왼쪽, 텍스트 오른쪽 */
-.home-container {
-    display: flex; /* 홈 컨테이너를 플렉스 박스로 설정 */
-    align-items: center; /* 세로 정렬 */
-    justify-content: center; /* 가운데 정렬 */
-    gap: 50px; /* 이미지와 텍스트 사이의 간격 설정 */
-    max-width: 900px; /* 최대 너비 설정 */
-    width: 90%; /* 부모 요소의 90% 너비 사용 */
-    margin: auto; /* 중앙 정렬 */
-}
-
-/* 프로필 이미지 */
-.profile-img {
-    width: 280px; /* 프로필 이미지 너비 설정 */
-    height: auto; /* 비율에 맞춰 높이 자동 조정 */
-    margin-left: 20px; /* 왼쪽 여백 설정 */
-}
-
-/* 소개 텍스트 */
-.intro-text {
-    text-align: left; /* 텍스트를 왼쪽 정렬 */
-    flex: 1; /* 남은 공간을 차지하도록 설정 */
-    max-width: 500px; /* 최대 너비 설정 */
-}
-
-.intro-text p {
-    font-size: 25px; /* 텍스트 크기 설정 */
-    line-height: 1.6; /* 줄 높이 설정 */
-    margin: 10px 0; /* 위아래 여백 설정 */
-}
-
-/* 드라마 섹션 아래쪽 배경을 더 많이 보이게 */
-.drama-section {
-    display: flex; /* 플렉스 박스 설정 */
-    flex-direction: column; /* 세로 방향으로 정렬 */
-    align-items: center; /* 가운데 정렬 */
-    margin-top: 40px; /* 위쪽 여백 설정 */
-    padding-bottom: 100px; /* 아래쪽 여백 크게 추가 */
-}
-
-/* 드라마 컨테이너 - 원래 크기 유지 */
-.drama-container {
-    display: flex; /* 플렉스 박스 설정 */
-    align-items: center; /* 세로 정렬 */
-    gap: 70px; /* 항목 간 간격 설정 */
-    max-width: 800px; /* 최대 너비 설정 */
-    background: rgb(255, 252, 241); /* 배경색 설정 */
-    padding: 20px; /* 내부 여백 설정 */
-    border-radius: 15px; /* 모서리를 둥글게 설정 */
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
-    margin-bottom: 30px; /* 박스 아래 마진 설정 */
-}
-
-/* 드라마 이미지 스타일 */
-.drama-img {
-    width: 250px; /* 이미지 너비 설정 */
-    height: auto; /* 비율에 맞춰 높이 자동 조정 */
-    margin-left: 30px; /* 왼쪽 여백 설정 */
-}
-
-/* 드라마 텍스트 스타일 */
-.drama-info {
-    text-align: left; /* 텍스트를 왼쪽 정렬 */
-    margin-right: 30px; /* 오른쪽 여백 설정 */
-}
-
-/* 드라마 제목 스타일 */
-.drama-info h3 {
-    font-size: 30px; /* 제목 글씨 크기 설정 */
-    margin-bottom: 10px; /* 아래쪽 여백 설정 */
-    color: #595959; /* 텍스트 색상 설정 */
-    font-family: 'MyCustomFont', sans-serif; /* 사용자 정의 폰트 적용 */
-}
-
-/* 드라마 내용 스타일 */
-.drama-info p {
-    font-size: 27px; /* 본문 글씨 크기 설정 */
-    margin: 5px 0; /* 위아래 여백 설정 */
-    color: #595959; /* 텍스트 색상 설정 */
-    font-family: 'MyCustomFont', sans-serif; /* 사용자 정의 폰트 적용 */
-}
-
-/* 여기부터는 드라마 추천 관련 코드 CSS */
-
-/* 드라마 추천 게시판 스타일 (recommend.html) */
-.drama-section {
-    text-align: center; /* 텍스트를 가운데 정렬 */
-    margin-top: 40px; /* 위쪽 여백 추가 */
-    max-width: 900px; /* 최대 너비 설정 */
-    width: 90%; /* 부모 요소 크기의 90% 차지 */
-    margin-left: auto; /* 중앙 정렬을 위한 자동 여백 */
-    margin-right: auto; /* 중앙 정렬을 위한 자동 여백 */
-}
-
-/* 드라마 목록 스타일 */
-.drama-list {
-    width: 90%; /* 부모 요소 기준으로 크기 조정 */
-    max-width: 800px; /* 최대 크기 설정 */
-    margin: 30px auto; /* 중앙 정렬, 위 아래 여백 추가 */
-    background: white; /* 배경색 흰색 설정 */
-    padding: 20px; /* 내부 여백 추가 */
-    border-radius: 10px; /* 둥근 테두리 */
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
-    min-height: 300px; /* 최소 높이 설정 (비어있을 때도 공간 확보) */
-    display: flex; /* 플렉스 박스 사용 */
-    flex-direction: column; /* 자식 요소들을 세로 방향으로 정렬 */
-    justify-content: space-between; 
-    /* 자식 요소들 사이의 공간을 균등하게 배분, 첫째부터 위에서 아래로 배치*/
-}
-
-/* 게시글이 없을 때 빈 목록 안내 문구 */
-.empty-message {
-    text-align: center; /* 텍스트 중앙 정렬 */
-    color: #595959; /* 글씨 색상 설정 */
-    font-size: 25px; /* 글씨 크기 설정 */
-}
-
-/* 게시글 목록 스타일 */
-.drama-list ul {
-    list-style: none; /* 리스트 점 제거 */
-    padding: 0; /* 패딩 제거 */
-    flex-grow: 1; /* 빈 공간을 채우도록 설정 */
-}
-
-/* 게시글 목록 항목 */
-.drama-list li {
-    background: rgb(255, 252, 241); /* 배경색 설정 */
-    padding: 15px; /* 내부 여백 추가 */
-    border-radius: 10px; /* 둥근 테두리 설정 */
-    margin-bottom: 10px; /* 아래쪽 간격 추가 */
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
-    font-size: 24px; /* 글씨 크기 설정 */
-    display: flex; /* 플렉스 박스 사용 */
-    justify-content: space-between; /* 자식 요소들 사이의 공간을 균등하게 배분 */
-    align-items: center; /* 자식 요소들을 세로 방향 중앙 정렬 */
-}
-
-/* 게시글 링크 */
-.drama-list li a {
-    text-decoration: none; /* 링크의 밑줄 제거 */
-    color: #595959; /* 글씨 색상 설정 */
-    font-weight: bold; /* 글씨 두께 설정 */
-    font-size: 22px; /* 글씨 크기 설정 */
-}
-
-/* 드라마 추가 버튼 스타일 */
-.add-drama-btn {
-    display: block; /* 블록 요소로 변경 */
-    background-color: #8fe2c7; /* 버튼 배경색 설정 */
-    color: white; /* 버튼 텍스트 색상 설정 */
-    text-align: center; /* 텍스트 가운데 정렬 */
-    padding: 12px; /* 내부 여백 추가 */
-    margin: 20px auto; /* 중앙 정렬, 위 아래 여백 추가 */
-    border-radius: 5px; /* 둥근 모서리 설정 */
-    width: 200px; /* 버튼 너비 설정 */
-    font-size: 22px; /* 글씨 크기 설정 */
-    font-weight: bold; /* 글씨 두께 설정 */
-    text-decoration: none; /* 링크의 밑줄 제거 */
-}
-
-.add-drama-btn:hover {
-    background-color: #87e7c7; /* 마우스 올릴 때 색상 변경 */
-}
-
-/* 검색창 스타일 */
+/* 검색 바 */
 .search-bar {
-    margin-top: 20px; /* 위쪽 여백 추가 */
-    display: flex; /* 검색창과 버튼을 가로 정렬 */
-    justify-content: center; /* 가운데 정렬 */
-    gap: 10px; /* 요소 사이 여백 추가 */
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .search-bar input {
-    padding: 10px; /* 내부 여백 추가 */
-    font-size: 24px; /* 글씨 크기 설정 */
-    border: 2px solid #ccc; /* 테두리 추가 */
-    border-radius: 5px; /* 둥근 모서리 설정 */
-    width: 250px; /* 입력창 너비 설정 */
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 24px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
 }
 
 .search-bar select {
-    padding: 10px; /* 내부 여백 추가 */
-    font-size: 24px; /* 글씨 크기 설정 */
-    border: 2px solid #ccc; /* 테두리 추가 */
-    border-radius: 5px; /* 둥근 모서리 설정 */
+  font-size: 18px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .search-bar button {
-    background-color: #8fe2c7; /* 검색 버튼 배경색 설정 */
-    color: white; /* 버튼 텍스트 색상 설정 */
-    border: none; /* 테두리 제거 */
-    padding: 10px 15px; /* 내부 여백 추가 */
-    border-radius: 5px; /* 둥근 모서리 설정 */
-    font-size: 22px; /* 글씨 크기 설정 */
-    cursor: pointer; /* 마우스 올릴 때 포인터로 변경 */
+  background-color: #d3d3d3;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
 }
 
 .search-bar button:hover {
-    background-color: #87e7c7; /* 마우스 올릴 때 버튼 색상 변경 */
+  background-color: #bcbcbc;
 }
 
-/* 드라마 추가 페이지 스타일 (create.html) */
+/* 드라마 목록 박스 */
+.drama-list {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  min-height: 300px;
+  position: relative;
+}
+
+.empty-message {
+  text-align: center;
+  color: #999;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.drama-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.drama-list li {
+  background: rgb(255, 252, 241);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.08);
+  font-size: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.drama-list li a {
+  text-decoration: none;
+  color: #595959;
+  font-weight: bold;
+}
+
+.add-drama-wrapper {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+
+.add-drama-btn {
+  background-color: #d3d3d3;
+  color: white;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.add-drama-btn:hover {
+  background-color: #bcbcbc;
+}
+
+/* ------------------------------------
+   로그인 박스 (recommend.html)
+------------------------------------- */
+.login-box {
+  width: 280px;
+  background: #fdfdfd;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+  font-size: 18px;
+  height: fit-content;
+  align-self: flex-start;
+  margin-top: 40px;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 10px;
+  background-color: #d3d3d3;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.login-box button:hover {
+  background-color: #bcbcbc;
+}
+
+.login-links {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.login-links a {
+  text-decoration: none;
+  color: #333;
+}
+
+.login-links a:hover {
+  text-decoration: underline;
+}
+
+/* ------------------------------------
+   로그인 후 영역 (user-info)
+------------------------------------- */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 280px;
+  background: #fdfdfd;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+  font-size: 18px;
+  margin-top: 40px;
+}
+
+.user-info p {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.user-info button {
+  background-color: #d3d3d3;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 5px;
+  font-size: 16px;
+}
+
+.user-info button:hover {
+  background-color: #bcbcbc;
+}
+
+#profilePic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #b3b2aac1;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ------------------------------------
+   detail.html (드라마 상세)
+------------------------------------- */
+.drama-detail {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.drama-detail label {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.drama-detail input,
+.drama-detail textarea {
+  width: 100%;
+  font-size: 18px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.button-group button {
+  background-color: #d3d3d3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.button-group button:hover {
+  background-color: #bcbcbc;
+}
+
+/* ------------------------------------
+   create.html (드라마 추천)
+------------------------------------- */
 .form-container {
-    display: flex; /* 요소들을 정렬하기 위해 flex 사용 */
-    flex-direction: column; /* 요소들을 세로(수직)로 정렬 */
-    align-items: center; /* 가로 방향 중앙 정렬 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    margin-top: 30px; /* 위쪽 여백 추가 */
-    gap: 15px; /* 입력창과 버튼 사이 여백 추가 */
+  max-width: 800px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
 }
 
 .form-container input,
 .form-container textarea {
-    width: 80%; /* 가로 길이 통일 */
-    max-width: 600px; /* 최대 길이 설정 */
-    padding: 12px; /* 내부 여백 추가 */
-    font-size: 24px; /* 글씨 크기 설정 */
-    border: 2px solid #ccc; /* 테두리 추가 */
-    border-radius: 5px; /* 둥글게 설정 */
+  width: 90%;
+  max-width: 600px;
+  margin-bottom: 15px;
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 
 .form-container textarea {
-    height: 150px; /* 텍스트 입력창 높이 설정 */
-    resize: none; /* 크기 조절 비활성화 */
+  height: 150px;
+  resize: none;
 }
 
 .form-container button {
-    width: 200px; /* 버튼 크기 통일 */
-    background-color: #8fe2c7; /* 버튼 색상 설정 */
-    color: white; /* 글자 색상 설정 */
-    padding: 12px 20px; /* 내부 여백 추가 */
-    font-size: 24px; /* 글씨 크기 설정 */
-    font-weight: bold; /* 글씨 두께 설정 */
-    border-radius: 5px; /* 둥글게 설정 */
-    cursor: pointer; /* 마우스 올릴 때 포인터로 변경 */
-    border: none; /* 테두리 제거 */
+  width: 200px;
+  background-color: #d3d3d3;
+  color: white;
+  padding: 12px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .form-container button:hover {
-    background-color: #87e7c7; /* 마우스 올릴 때 색상 변경 */
+  background-color: #bcbcbc;
 }
 
-/* 드라마 상세 페이지 스타일 (detail.html) */
-.drama-detail {
-    display: flex; /* 플렉스 박스 사용, 자식 요소들을 플렉스 컨테이너로 설정 */
-    flex-direction: column; /* 자식 요소들을 세로 방향으로 정렬 */
-    align-items: center; /* 자식 요소들을 수평 중앙 정렬 */
-    gap: 15px; /* 자식 요소들 간의 간격 설정 */
-    margin-top: 30px; /* 위쪽 여백 추가 */
+/* ------------------------------------
+   회원가입 폼 (signup.html)
+------------------------------------- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 15px;
 }
 
-/* 드라마 상세 페이지 내 레이블 스타일 */
-.drama-detail label {
-    font-size: 24px; /* 글씨 크기 설정 */
-    font-weight: bold; /* 글씨를 굵게 설정 */
-    margin-bottom: 5px; /* 아래쪽 여백 추가 */
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 16px;
 }
 
-/* 입력 필드와 텍스트 영역 스타일 */
-.drama-detail input,
-.drama-detail textarea {
-    width: 80%; /* 너비를 부모 요소의 80%로 설정 */
-    max-width: 600px; /* 최대 너비를 600px로 제한 */
-    padding: 10px; /* 내부 여백 추가 */
-    font-size: 26px; /* 글씨 크기 설정 */
-    border: 2px solid #ccc; /* 테두리 설정 */
-    border-radius: 5px; /* 모서리를 둥글게 설정 */
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="file"] {
+  width: 100%;
+  font-size: 16px;
+  padding: 8px;
+  box-sizing: border-box;
 }
 
-/* 텍스트 영역 추가 스타일 */
-.drama-detail textarea {
-    height: 150px; /* 텍스트 영역의 높이 설정 */
-    resize: none; /* 사용자가 크기 조절을 할 수 없도록 설정 */
+.image-preview {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
 }
 
-/* 버튼 그룹 스타일 */
-.button-group {
-    display: flex; /* 버튼들을 플렉스 박스로 정렬 */
-    justify-content: center; /* 버튼들을 수평 중앙 정렬 */
-    gap: 15px; /* 버튼 간 간격 설정 */
-    margin-top: 20px; /* 위쪽 여백 추가 */
+.image-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 5px;
 }
 
-/* 버튼 스타일 */
-.button-group button {
-    background-color: #8fe2c7; /* 버튼 배경색 설정 */
-    border: none; /* 테두리 제거 */
-    color: white; /* 버튼 텍스트 색상 설정 */
-    padding: 10px 20px; /* 내부 여백 추가 */
-    border-radius: 5px; /* 모서리를 둥글게 설정 */
-    font-size: 24px; /* 글씨 크기 설정 */
-    font-weight: bold; /* 글씨를 굵게 설정 */
-    cursor: pointer; /* 마우스 올릴 때 포인터로 변경 */
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-/* 버튼에 마우스 올릴 때 색상 변경 */
-.button-group button:hover {
-    background-color: #87e7c7; /* 마우스 올릴 때 버튼 배경색 변경 */
+.form-group label {
+  width: 120px;        /* 라벨 고정 너비 */
+  margin-right: 10px;
+  font-weight: bold;
 }
 
-/* 타이틀(h1)에 마우스 올릴 때 손가락 커서 표시 */
-h1 {
-    cursor: pointer; /* 마우스를 올릴 때 포인터 모양으로 변경 */
+.form-group input[type="text"],
+.form-group input[type="file"] {
+  flex: 1;              /* 입력칸은 남은 공간 다 차지 */
+  padding: 8px;
+  font-size: 14px;
+}
+
+/* ------------------------------------
+   비밀번호 입력력 (create.html)
+------------------------------------- */
+.secret-inline-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.secret-inline-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.secret-inline-group input[type="password"] {
+  width: 200px !important;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#secretPassword {
+  display: none;
 }

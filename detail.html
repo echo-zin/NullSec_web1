@@ -4,27 +4,22 @@
     <meta charset="UTF-8"> <!-- 문서의 문자 인코딩을 UTF-8로 설wjd -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <!-- 반응형 웹을 위해 뷰포트 설정, 기기 넓이에 맞춤 -->
-    <title>zinuuei BLOG</title> <!-- 브라우저 탭에 표시 -->
+    <title>게시글</title> <!-- 브라우저 탭에 표시 -->
     <link rel="stylesheet" href="styles.css"> 
     <!-- 외부 스타일시트(styles.css)를 연결하여 CSS 스타일 적용 -->
 </head>
 <body>
     <header>
-        <h1>zinuuei BLOG</h1>
-        <nav>
-            <ul>
-                <li><a href="drama.html">드라마 소개</a></li>
-                <!-- 드라마 소개 페이지로 이동 -->
-                <li><a href="index.html">홈</a></li>
-                <!-- 홈 페이지로 이동 -->
-                <li><a href="recommend.html" class="active">드라마 추천</a></li>
-                <!-- 드라마 추천 페이지로 이동 링크 
-                     class="active"는 현재 페이지를 나타내는 스타일을 적용 -->
-            </ul>
-        </nav>
+        <h1 onclick="goHome()" style="cursor:pointer;">zinuuei BLOG</h1>
     </header>
 
     <section class="drama-detail">
+        <label>작성자:</label>
+        <span id="dramaAuthor"></span>
+
+        <label>첨부파일:</label>
+        <a id="fileDownload" href="#" download style="display: none;"></a>
+
         <!-- 드라마 상세 정보를 표시하는 섹션 -->
         <label for="dramaTitle">제목</label>
         <!-- 제목 입력 필드에 대한 레이블 -->

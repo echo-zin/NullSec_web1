@@ -1,45 +1,38 @@
-<!DOCTYPE html> <!-- HTML5 문서 선언, 브라우저에게 HTML5 문서임을 알림 -->
-<html lang="ko"> <!-- 문서의 기본 언어를 한국어로 설정 -->
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-    <meta charset="UTF-8"> <!-- 문서의 문자 인코딩을 UTF-8로 설wjd -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <!-- 반응형 웹을 위해 뷰포트 설정, 기기 넓이에 맞춤 -->
-    <title>zinuuei BLOG</title> <!-- 브라우저 탭에 표시 -->
-    <link rel="stylesheet" href="styles.css"> 
-    <!-- 외부 스타일시트(styles.css)를 연결하여 CSS 스타일 적용 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 수정</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>zinuuei BLOG</h1> <!-- 블로그 제목 -->
-        <nav>
-            <ul>
-                <li><a href="drama.html">드라마 소개</a></li> 
-                <!-- 드라마 소개 페이지로 이동하는 링크 -->
-                <li><a href="index.html">홈</a></li> 
-                <!-- 홈 페이지로 이동하는 링크 -->
-                <li><a href="recommend.html" class="active">드라마 추천</a></li> 
-                <!-- 드라마 추천 페이지 링크, 현재 페이지 강조 -->
-            </ul>
-        </nav>
+        <h1 onclick="goHome()" style="cursor:pointer;">zinuuei BLOG</h1>
     </header>
 
     <section class="form-container">
-        <!-- 드라마 수정 폼을 포함하는 섹션 -->
-        <h2>드라마 수정하기</h2> <!-- 섹션의 제목을 표시 -->
-        <input type="text" id="editTitle" placeholder="드라마 제목 입력">
-        <!-- 드라마 제목을 입력할 수 있는 텍스트 필드로, 
-             id 속성을 통해 JavaScript에서 접근할 수 있으며, 
-             placeholder는 입력 필드에 대한 안내 메시지를 표시 -->
-        <textarea id="editContent" placeholder="드라마 내용을 입력하세요."></textarea>
-        <!-- 드라마 내용을 입력할 수 있는 텍스트 영역으로, 
-             id 속성을 통해 JavaScript에서 접근할 수 있으며, 
-             placeholder는 입력 필드에 대한 안내 메시지를 표시 -->
-        <button onclick="saveEdit()">수정 완료</button>
-        <!-- 드라마 수정 완료 버튼으로, 클릭 시 saveEdit() 함수를 호출하여 수정 내용을 저장하는 기능을 수행 -->
+        <h2>드라마 수정하기</h2>
+
+        <form id="editForm" enctype="multipart/form-data">
+            <input type="text" id="editTitle" name="title" placeholder="드라마 제목 입력">
+            <textarea id="editContent" name="content" placeholder="드라마 내용을 입력하세요."></textarea>
+
+            <!-- 파일 업로드 -->
+            <input type="file" id="editFileInput" name="attachment"><br>
+
+            <div class="form-group secret-inline-group">
+                <label class="secret-inline-label">
+                    <input type="checkbox" id="editIsSecret" name="is_secret">
+                    비밀글
+                </label>
+                <input type="password" id="editSecretPassword" name="password" placeholder="비밀번호 입력">
+            </div>  
+
+            <button type="submit">수정 완료</button>
+        </form>
     </section>
 
     <script src="/script.js" defer></script>
-    <!-- 외부 JavaScript 파일을 링크하여 페이지의 동작을 정의 
-         defer 속성은 HTML 문서를 완전히 불러온 후에 스크립트를 실행하도록 설정 -->
 </body>
 </html>

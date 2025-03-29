@@ -1,58 +1,68 @@
-<!DOCTYPE html> <!-- HTML5 문서 선언, 브라우저에게 HTML5 문서임을 알림 -->
-<html lang="ko"> <!-- 문서의 기본 언어를 한국어로 설정 -->
+<!-- recommend.html -->
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-    <meta charset="UTF-8"> <!-- 문서의 문자 인코딩을 UTF-8로 설wjd -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <!-- 반응형 웹을 위해 뷰포트 설정, 기기 넓이에 맞춤 -->
-    <title>zinuuei BLOG</title> <!-- 브라우저 탭에 표시 -->
-    <link rel="stylesheet" href="styles.css"> 
-    <!-- 외부 스타일시트(styles.css)를 연결하여 CSS 스타일 적용 -->
+  <meta charset="UTF-8">
+  <title>드라마 목록</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-    <header>
-        <h1>zinuuei BLOG</h1> <!-- 블로그 제목 -->
-        <nav>
-            <ul>
-                <li><a href="drama.html">드라마 소개</a></li> 
-                <!-- 드라마 소개 페이지로 이동하는 링크 -->
-                <li><a href="index.html">홈</a></li> 
-                <!-- 홈 페이지로 이동하는 링크 -->
-                <li><a href="recommend.html" class="active">드라마 추천</a></li> 
-                <!-- 드라마 추천 페이지 링크, 현재 페이지 강조 -->
-            </ul>
-        </nav>
-    </header>
+  <div class="top-header">
+    <h1>zinuuei BLOG</h1>
+  </div>
 
-    <section class="search-bar"> <!-- 검색 바를 포함하는 섹션 -->
-        <input type="text" id="searchInput" placeholder="검색어 입력"> 
-        <!-- 검색어를 입력할 수 있는 텍스트 박스, 
-        아무 내용이 없으면 검색어 입력 문구 뜸 
-        id 속성인 searchInput은 JavaScript에서 이 요소를 참조할 때 사용됨 -->
-        <select id="searchType"> <!-- 검색 타입을 선택할 수 있는 드롭다운 메뉴 -->
-            <option value="all">전체</option> <!-- 전체 검색 옵션 -->
-            <option value="title">제목</option> <!-- 제목으로 검색하는 옵션 -->
-            <option value="content">내용</option> <!-- 내용으로 검색하는 옵션 -->
+  <div class="main-container">
+    <!-- 왼쪽 게시판 -->
+    <div class="drama-board">
+      <!-- 검색 바 -->
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="검색어를 입력하세요">
+        <select id="searchType">
+          <option value="all">전체</option>
+          <option value="title">제목</option>
+          <option value="content">내용</option>
         </select>
-        <button onclick="searchDrama()">검색</button> 
-        <!-- 검색 버튼 한 번 클릭 시 searchDrama() 함수 호출 -->
-    </section>
+        <button onclick="searchDrama()">검색</button>
+      </div>
 
-    <section class="drama-list"> <!-- 추천 드라마 목록을 포함하는 섹션 
-    이 리스트는 JavaScript를 통해 동적으로 업데이트
-    드라마 목록이 추가되면 각 드라마 항목이 <li> 요소로 삽입
-    초기 상태에서는 비어 있으며, JavaScript의 로직에 따라 내용 추가-->
-        <ul id="dramaList"> <!-- 드라마 목록을 표시할 비어 있는 리스트 -->
-            <!-- JavaScript에서 게시글이 추가되면 여기에 li로 삽입 -->
-        </ul>
-        <div id="emptyMessage" class="empty-message">아직 추천된 드라마가 없습니다.</div>
-        <!-- 추천된 드라마가 없을 때 표시할 메시지 
-        이 메시지는 기본적으로 화면에 표시되지만
-        드라마 목록이 추가되면 JavaScript를 통해 숨겨짐-->
+      <!-- 드라마 목록 영역 -->
+      <div class="drama-list" id="dramaListWrapper">
+        <p id="emptyMessage" class="empty-message">아직 드라마가 없습니다.</p>
+        <ul id="dramaList"></ul>
+        <div class="add-drama-wrapper">
+          <a href="create.html" class="add-drama-btn">+ 드라마 추천하기</a>
+        </div>
+      </div>
+    </div>
 
-        <a href="create.html" class="add-drama-btn">드라마 추천하기</a> 
-        <!-- 드라마 추천 페이지로 이동하는 버튼 -->
-    </section>    
-    <script src="/script.js" defer></script> 
-    <!-- 외부 JavaScript 파일(script.js)을 html이 전부 불러지고 나서 불러옴 -->
+    <!-- 오른쪽: 로그인 전 -->
+    <div class="login-box" id="sideLoginBox">
+      <p>로그인 후 드라마를 추천할 수 있어요</p>
+      <input type="text" id="loginId" placeholder="아이디">
+      <input type="password" id="loginPw" placeholder="비밀번호">
+      <button onclick="portalLogin()">로그인</button>
+      <div class="login-links">
+        <a href="signup.html">회원가입</a> |
+        <a href="find_id.html">아이디찾기</a> |
+        <a href="find_pw.html">비밀번호찾기</a>
+      </div>
+    </div>
+
+    <!-- user-info 영역 -->
+    <div class="user-info" id="userInfoBox" style="display: none;">
+        <div class="profile-section">
+            <img id="profilePic" alt="프로필 사진" />
+        </div>
+        <p><span id="userName"></span>님 안녕하세요!</p>
+
+        <!-- 버튼 그룹 감싸는 div -->
+        <div class="button-group">
+            <button onclick="logout()">로그아웃</button>
+            <button onclick="goProfile()">프로필 정보</button>
+        </div>
+    </div>
+
+  </div>
 </body>
 </html>

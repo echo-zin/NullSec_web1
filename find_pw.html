@@ -1,0 +1,53 @@
+<!-- find_pw.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>비밀번호 찾기</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1 onclick="goHome()" style="cursor:pointer;">zinuuei BLOG</h1>
+  </header>
+
+  <section class="form-container">
+    <h2>비밀번호 찾기</h2>
+    <form id="findPwForm">
+      <input type="text" id="username" placeholder="아이디 입력" required><br>
+      <input type="text" id="name" placeholder="이름 입력" required><br>
+      <button type="submit">비밀번호 찾기</button>
+    </form>
+    <p id="foundPwResult"></p>
+  </section>
+
+  <script>
+    document.getElementById("findPwForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const name = document.getElementById("name").value.trim();
+
+      try {
+        const res = await fetch("http://127.0.0.1:5000/find-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, name })
+        });
+        const result = await res.json();
+        if (res.ok) {
+          document.getElementById("foundPwResult").textContent = `비밀번호: ${result.password}`;
+        } else {
+          alert(result.error);
+        }
+      } catch (err) {
+        alert("비밀번호 찾기 중 오류 발생");
+        console.error(err);
+      }
+    });
+
+    function goHome() {
+      window.location.href = "recommend.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>사용자 프로필</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1 onclick="goHome()" style="cursor:pointer;">zinuuei BLOG</h1>
+  </header>
+  <section class="form-container">
+    <h2>작성자 프로필</h2>
+    <div class="profile-section">
+      <img id="profilePic" alt="프로필 사진" />
+    </div>
+    <div class="user-details">
+      <p><strong>이름:</strong> <span id="userName"></span></p>
+      <p><strong>학교:</strong> <span id="userSchool"></span></p>
+      <p><strong>아이디:</strong> <span id="userUsername"></span></p>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const params = new URLSearchParams(window.location.search);
+      const userId = params.get("id");
+
+      if (!userId) {
+        alert("잘못된 접근입니다.");
+        window.location.href = "recommend.html";
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/user/${userId}`);
+        if (!response.ok) throw new Error("사용자 정보를 불러올 수 없습니다.");
+        const user = await response.json();
+
+        document.getElementById("userName").textContent = user.name;
+        document.getElementById("userSchool").textContent = user.school;
+        document.getElementById("userUsername").textContent = user.username;
+        const profilePic = document.getElementById("profilePic");
+
+        if (user.profile_image) {
+          profilePic.src = `http://127.0.0.1:5000/uploads/${user.profile_image}`;
+        } else {
+          profilePic.src = "";
+          profilePic.style.backgroundColor = "#eee";
+        }
+      } catch (error) {
+        alert("사용자 정보 불러오기 실패");
+        console.error(error);
+        window.location.href = "recommend.html";
+      }
+    });
+  </script>
+</body>
+</html>

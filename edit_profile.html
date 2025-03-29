@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>프로필 정보 수정</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1 onclick="goHome()" style="cursor:pointer;">zinuuei BLOG</h1>
+  </header>
+
+  <section class="form-container">
+    <h2>프로필 정보 수정</h2>
+
+    <form id="editProfileForm" enctype="multipart/form-data">
+        <!-- 이미지 미리보기 -->
+        <div class="image-preview">
+          <img id="editPreviewImage" alt="미리보기" style="display: none;" width="120" height="120">
+        </div>
+      
+        <!-- 프로필 이미지 -->
+        <div class="form-group">
+          <label for="editProfileImage">프로필 이미지</label>
+          <input type="file" id="editProfileImage" name="profile_image" accept="image/*">
+        </div>
+      
+        <!-- 이름 -->
+        <div class="form-group">
+          <label for="editName">이름</label>
+          <input type="text" id="editName" name="name" required>
+        </div>
+      
+        <!-- 학교 -->
+        <div class="form-group">
+          <label for="editSchool">학교</label>
+          <input type="text" id="editSchool" name="school" required>
+        </div>
+      
+        <!-- 버튼 -->
+        <div class="button-group">
+          <button type="submit">수정하기</button>
+          <button type="button" onclick="deleteAccount()" id="deleteBtn">회원탈퇴</button>
+        </div>
+    </form>      
+
+  </section>
+</body>
+</html>

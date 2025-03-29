@@ -1,0 +1,55 @@
+<!-- user_profile.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>프로필 정보</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="/script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1 onclick="goHome()" style="cursor:pointer;">zinuuei BLOG</h1>
+  </header>
+  <section class="form-container">
+    <h2>프로필 정보</h2>
+    <div class="profile-section">
+      <img id="profilePic" alt="프로필 사진">
+    </div>
+    <div class="user-details">
+      <p><strong>이름:</strong> <span id="userName"></span></p>
+      <p><strong>학교:</strong> <span id="userSchool"></span></p>
+      <p><strong>아이디:</strong> <span id="userUsername"></span></p>
+    </div>
+    <div class="button-group">
+      <button id="editProfileBtn">프로필 수정</button>
+    </div>
+  </section>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+        document.getElementById("userName").textContent = user.name;
+        document.getElementById("userSchool").textContent = user.school;
+        document.getElementById("userUsername").textContent = user.username;
+        const profilePic = document.getElementById("profilePic");
+        if (user.profile_image) {
+          profilePic.src = `http://127.0.0.1:5000/uploads/${user.profile_image}`;
+        } else {
+          profilePic.src = "";
+          profilePic.style.backgroundColor = "#eee";
+        }
+      }
+      document.getElementById("editProfileBtn").addEventListener("click", () => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user && user.id) {
+          window.location.href = `edit_profile.html?id=${user.id}`;
+        } else {
+          alert("사용자 정보를 찾을 수 없습니다. 다시 로그인 해주세요.");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
