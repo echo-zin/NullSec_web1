@@ -25,31 +25,5 @@
       <button id="editProfileBtn">프로필 수정</button>
     </div>
   </section>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        document.getElementById("userName").textContent = user.name;
-        document.getElementById("userSchool").textContent = user.school;
-        document.getElementById("userUsername").textContent = user.username;
-        const profilePic = document.getElementById("profilePic");
-        if (user.profile_image) {
-          profilePic.src = `http://127.0.0.1:5000/uploads/${user.profile_image}`;
-        } else {
-          profilePic.src = "";
-          profilePic.style.backgroundColor = "#eee";
-        }
-      }
-      document.getElementById("editProfileBtn").addEventListener("click", () => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (user && user.id) {
-          window.location.href = `edit_profile.html?id=${user.id}`;
-        } else {
-          alert("사용자 정보를 찾을 수 없습니다. 다시 로그인 해주세요.");
-        }
-      });
-    });
-  </script>
 </body>
 </html>

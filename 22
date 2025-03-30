@@ -1,0 +1,602 @@
+console.log("script.js 정상 로드"); 
+// 콘솔에 script.js가 정상적으로 로드되었음을 출력 (디버깅용)
+
+function goHome() {
+  // goHome 함수: 사용자가 호출 시 홈페이지(recommend.html)로 이동하는 기능
+  window.location.href = "recommend.html"; 
+  // location.href 속성을 통해 브라우저 페이지를 지정한 URL로 이동시킴
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  // 이벤트 리스너: 문서의 DOM이 완전히 로드되었을 때 실행됨 (DOMContentLoaded는 HTML만 파싱되었을 때 트리거됨)
+  console.log("DOMContentLoaded 실행됨"); // 콘솔에 DOMContentLoaded가 실행되었음을 출력
+
+  const storedUser = localStorage.getItem("user"); 
+  // localStorage에서 key가 'user'인 항목을 가져옴 (문자열 형태)
+  if (storedUser) {
+    const user = JSON.parse(storedUser); 
+    // JSON 문자열을 JavaScript 객체로 변환 (역직렬화)
+    showUserInfo(user); // 사용자 정보를 페이지에 반영하는 함수 호출
+  }
+
+  if (document.getElementById("dramaList")) {
+    // 요소 id가 dramaList인 HTML 요소가 존재할 경우
+    await loadDramas(); // 드라마 목록을 비동기로 불러오는 함수 실행
+  }
+
+  if (window.location.pathname.includes("detail.html")) {
+    // 현재 페이지의 경로명이 detail.html을 포함할 경우 (상세 페이지)
+    await loadDetail(); // 드라마 상세 정보 로딩 함수 호출
+  }
+
+  if (window.location.pathname.includes("edit.html")) {
+    // 현재 페이지가 edit.html인 경우 (수정 페이지)
+    const params = new URLSearchParams(window.location.search); 
+    // URL의 쿼리 문자열을 파싱하기 위한 객체 생성
+    const id = params.get("id"); // 쿼리 파라미터에서 id 값을 가져옴 (예: ?id=3 → 3)
+    if (!id) {
+      alert("잘못된 접근입니다."); // id가 없는 경우 경고 표시
+      window.location.href = "recommend.html"; // 홈으로 리디렉션
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/get-drama/${id}`); 
+      // 드라마 데이터를 서버에서 가져오는 fetch 요청 (GET)
+      const drama = await response.json(); // 서버 응답을 JSON 객체로 변환
+
+      document.getElementById("editTitle").value = drama.title; 
+      // 입력 필드에 드라마 제목 설정
+      document.getElementById("editContent").value = drama.content; 
+      // 입력 필드에 드라마 내용 설정
+
+      if (drama.filename) {
+        const fileLabel = document.createElement("p"); // <p> 요소 생성
+        fileLabel.textContent = `기존 파일: ${drama.filename}`; // 텍스트 설정
+        document.getElementById("editForm").prepend(fileLabel); 
+        // 폼 상단에 해당 <p> 요소 삽입
+      }
+
+      const secretCheckbox = document.getElementById("editIsSecret"); 
+      // 비밀글 여부 체크박스 요소 가져오기
+      const passwordInput = document.getElementById("editSecretPassword"); 
+      // 비밀번호 입력 필드 요소 가져오기
+
+      secretCheckbox.checked = drama.is_secret; 
+      // 드라마가 비밀글이면 체크박스를 체크 상태로 설정
+      passwordInput.style.display = drama.is_secret ? "block" : "none"; 
+      // 비밀글이면 비밀번호 입력 필드 표시
+      passwordInput.value = drama.password || ""; 
+      // 비밀번호 값을 설정 (없을 경우 빈 문자열)
+
+      secretCheckbox.addEventListener("change", () => {
+        passwordInput.style.display = secretCheckbox.checked ? "block" : "none"; 
+        // 체크박스 상태 변경 시 필드 표시/숨김
+      });
+
+      const form = document.getElementById("editForm"); // 수정 폼 요소 가져오기
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault(); // 폼 기본 제출 동작 막기 (페이지 새로고침 방지)
+        const formData = new FormData(form); 
+        // 폼 데이터를 FormData 객체로 생성 (파일 포함 가능)
+        try {
+          const res = await fetch(`http://127.0.0.1:5000/edit-drama/${id}`, {
+            method: "POST", // POST 방식으로 서버에 데이터 전송
+            body: formData // 요청 본문에 FormData 포함
+          });
+          const result = await res.json(); // 응답을 JSON 객체로 파싱
+          if (res.ok) {
+            alert("수정 완료!"); // 성공 메시지 출력
+            window.location.href = `detail.html?id=${id}`; 
+            // 수정된 드라마 상세 페이지로 이동
+          } else {
+            alert("수정 실패: " + result.error); // 실패 메시지 출력
+          }
+        } catch (err) {
+          console.error("수정 요청 실패:", err); // 오류 로그 출력
+          alert("수정 중 오류가 발생했습니다."); // 사용자 알림
+        }
+      });
+    } catch (err) {
+      console.error("드라마 불러오기 실패:", err); // 콘솔 오류 출력
+      alert("데이터를 불러올 수 없습니다."); // 사용자 알림창
+    }
+  }
+
+  if (window.location.pathname.includes("create.html")) {
+    // create.html 페이지일 경우 (드라마 작성 페이지)
+    const createForm = document.getElementById("createForm"); 
+    // 작성 폼 요소 가져오기
+
+    const storedUser = localStorage.getItem("user"); 
+    // 로그인 사용자 정보 로컬 스토리지에서 가져오기
+    if (!storedUser) {
+      alert("로그인 후 이용 가능한 기능입니다."); // 로그인하지 않았을 경우 경고
+      window.location.href = "recommend.html"; // 홈으로 이동
+      return;
+    }
+    const user = JSON.parse(storedUser); // JSON 파싱하여 사용자 정보 객체화
+    document.getElementById("hiddenUserId").value = user.id; 
+    // 숨겨진 필드에 사용자 ID 설정
+
+    const secretCheckbox = document.getElementById("isSecret"); // 비밀글 여부 체크박스
+    const passwordInput = document.getElementById("secretPassword"); 
+    // 비밀번호 입력 필드
+    passwordInput.style.display = "none"; // 기본적으로 비밀번호 입력 필드 숨김
+    secretCheckbox.addEventListener("change", () => {
+      passwordInput.style.display = secretCheckbox.checked ? "block" : "none"; 
+      // 체크 상태에 따라 필드 표시 여부 변경
+    });
+
+    createForm.addEventListener("submit", async (e) => {
+      e.preventDefault(); // 기본 폼 제출 방지
+
+      const formData = new FormData(createForm); // 폼 데이터를 FormData로 구성
+      const title = formData.get("title")?.trim(); // 제목 필드 값 가져오기 및 공백 제거
+      const content = formData.get("content")?.trim(); 
+      // 내용 필드 값 가져오기 및 공백 제거
+      const isSecret = formData.get("is_secret") === "on"; // 체크박스 값 여부 확인
+      const password = formData.get("password"); // 비밀번호 필드 값 가져오기
+
+      if (!title || !content) {
+        alert("제목과 내용을 모두 입력해주세요!"); // 필수 항목 누락 시 경고
+        return;
+      }
+
+      if (isSecret && !password) {
+        alert("비밀글 비밀번호를 입력해주세요!"); // 비밀글인데 비밀번호 미입력 시 경고
+        return;
+      }
+
+      try {
+        const response = await fetch("http://127.0.0.1:5000/add-drama", {
+          method: "POST", // POST 방식으로 서버에 새 드라마 추가 요청
+          body: formData // 본문에 FormData 포함 (파일 포함 가능)
+        });
+
+        const result = await response.json(); // JSON 응답 파싱
+        if (response.ok) {
+          alert("드라마가 추가되었습니다!"); // 성공 메시지
+          window.location.href = `detail.html?id=${result.id}`; 
+          // 추가된 드라마 상세 페이지로 이동
+        } else {
+          alert("등록 실패: " + result.error); // 실패 메시지 출력
+        }
+      } catch (err) {
+        console.error("등록 요청 실패:", err); // 콘솔 오류 출력
+        alert("등록 중 오류가 발생했습니다."); // 사용자 알림
+      }
+    });
+  }
+
+  const title = document.querySelector("h1"); // 페이지의 <h1> 요소 가져오기
+  if (title) {
+    title.addEventListener("click", () => {
+      goHome(); // 클릭 시 홈으로 이동하는 goHome 함수 호출
+    });
+  }
+
+  const signupForm = document.getElementById("signupForm"); // 회원가입 폼 요소 가져오기
+  if (signupForm) {
+    const profileInput = document.getElementById("signupProfileImage"); 
+    // 프로필 이미지 업로드 input 요소
+    const previewImage = document.getElementById("previewImage"); 
+    // 이미지 미리보기 <img> 요소
+
+    if (profileInput) {
+      profileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0]; // 사용자가 선택한 파일 중 첫 번째 파일
+        if (file) {
+          const reader = new FileReader(); // FileReader 객체 생성
+          reader.onload = (ev) => {
+            previewImage.src = ev.target.result; // 이미지 미리보기 설정
+            previewImage.style.display = "block"; // 미리보기 표시
+          };
+          reader.readAsDataURL(file); // 파일을 데이터 URL로 읽어옴 (이미지 인코딩)
+        } else {
+          previewImage.src = ""; // 이미지 초기화
+          previewImage.style.display = "none"; // 미리보기 숨김
+        }
+      });
+    }
+
+    signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault(); // 기본 제출 방지
+      const formData = new FormData(signupForm); // 회원가입 폼 데이터 구성
+      try {
+        const response = await fetch("http://127.0.0.1:5000/signup", {
+          method: "POST", // POST 방식 요청
+          body: formData // 파일 포함 회원가입 정보 전송
+        });
+        const result = await response.json(); // 응답 JSON 파싱
+        if (response.ok) {
+          alert("회원가입 성공!"); // 성공 알림
+          window.location.href = "recommend.html"; // 홈으로 이동
+        } else {
+          alert("회원가입 실패: " + result.error); // 실패 알림
+        }
+      } catch (error) {
+        console.error("회원가입 요청 실패:", error); // 오류 로그
+        alert("회원가입 중 오류가 발생했습니다."); // 오류 알림
+      }
+    });
+  }
+});
+// ===================== 사용자 정보 수정 페이지 데이터 로드 함수 =====================
+async function loadUserEditData(userId) {
+  // userId: 수정하려는 사용자의 고유 ID
+  try {
+    const response = await fetch(`http://127.0.0.1:5000/user/${userId}`); 
+    // 사용자 정보를 가져오기 위한 API 요청
+    if (!response.ok) throw new Error("사용자 정보를 가져올 수 없습니다."); 
+    // 응답 실패 시 예외 발생
+    const user = await response.json(); // JSON 형태로 응답 파싱
+
+    document.getElementById("editName").value = user.name || ""; 
+    // 이름 입력 필드에 사용자 이름 설정 (없으면 공백)
+    document.getElementById("editSchool").value = user.school || ""; 
+    // 학교 입력 필드에 사용자 학교 설정
+
+    const previewImg = document.getElementById("editPreviewImage"); 
+    // 프로필 이미지 미리보기 요소 가져오기
+    if (user.profile_image) {
+      previewImg.src = `http://127.0.0.1:5000/uploads/${user.profile_image}`; 
+      // 이미지 경로 설정
+      previewImg.style.display = "block"; // 이미지 표시
+    } else {
+      previewImg.style.display = "none"; // 이미지가 없으면 숨김
+    }
+  } catch (error) {
+    console.error("사용자 정보 불러오기 실패:", error); // 콘솔에 오류 로그 출력
+    alert("사용자 정보를 불러오는 중 오류가 발생했습니다."); // 사용자에게 알림 표시
+    window.location.href = "recommend.html"; // 홈으로 이동
+  }
+}
+
+
+// ===================== 드라마 목록 불러오기 함수 =====================
+async function loadDramas() {
+  // 드라마 전체 목록을 서버에서 가져와 페이지에 표시하는 함수
+  console.log("드라마 목록 불러오기 실행"); // 함수 실행 로그 출력 (디버깅용)
+  try {
+    const response = await fetch("http://127.0.0.1:5000/get-dramas"); 
+    // 전체 드라마 목록 요청 (GET)
+    const dramas = await response.json(); // JSON 배열로 응답 파싱
+
+    const list = document.getElementById("dramaList"); // 드라마 리스트를 표시할 ul 요소
+    const emptyMessage = document.getElementById("emptyMessage"); 
+    // 드라마가 없을 경우 표시할 메시지 요소
+
+    list.innerHTML = ""; // 기존 목록 초기화 (클리어)
+    if (dramas.length === 0) {
+      emptyMessage.style.display = "block"; // 드라마가 없으면 메시지 표시
+    } else {
+      emptyMessage.style.display = "none"; // 드라마가 있으면 메시지 숨김
+      dramas.forEach((drama) => {
+        const li = document.createElement("li"); // 새로운 리스트 항목 생성
+        li.innerHTML = `<strong>${drama.title}${drama.is_secret ? " 🔐" : ""}</strong>`; // 드라마 제목 + 비밀글 여부 표시
+        li.style.cursor = "pointer"; // 커서 포인터로 변경 (클릭 가능 UI)
+        li.addEventListener("click", () => {
+          window.location.href = `detail.html?id=${drama.id}`; 
+          // 클릭 시 해당 드라마 상세 페이지로 이동
+        });
+        list.appendChild(li); // 리스트에 항목 추가
+      });
+    }
+  } catch (error) {
+    console.error("드라마 목록 불러오기 실패:", error); // 오류 발생 시 콘솔에 출력
+  }
+}
+
+
+// ===================== 드라마 상세 정보 불러오기 함수 =====================
+async function loadDetail() {
+  // 현재 URL의 id 파라미터를 바탕으로 드라마 상세 정보를 불러옴
+  const params = new URLSearchParams(window.location.search); 
+  // 쿼리스트링 파라미터 객체 생성
+  const id = params.get("id"); // 드라마 ID 값 추출
+  let drama;
+
+  try {
+    const response = await fetch(`http://127.0.0.1:5000/get-drama/${id}`); 
+    // ID에 해당하는 드라마 데이터 요청
+    if (!response.ok) throw new Error("데이터를 찾을 수 없음"); // 응답 실패 시 예외 발생
+    drama = await response.json(); // JSON 형태로 응답 파싱
+
+    if (drama.is_secret) {
+      // 비밀글일 경우 비밀번호 검증
+      const inputPw = prompt("이 글은 비밀글입니다. 비밀번호를 입력하세요:");
+      const verifyResponse = await fetch("http://127.0.0.1:5000/verify-password", {
+        method: "POST", // POST 방식으로 비밀번호 검증 요청
+        headers: {
+          "Content-Type": "application/json" // 요청 본문 타입 설정
+        },
+        body: JSON.stringify({ id, password: inputPw }) 
+        // 요청 본문으로 ID와 입력된 비밀번호 전송
+      });
+
+      if (!verifyResponse.ok) {
+        alert("비밀번호가 틀렸거나 접근할 수 없습니다."); // 비밀번호 오류 또는 접근 불가
+        window.location.href = "recommend.html"; // 홈으로 리다이렉트
+        return;
+      }
+    }
+
+    document.getElementById("dramaTitle").value = drama.title; 
+    // 제목 입력란에 드라마 제목 표시
+    document.getElementById("dramaContent").value = drama.content; 
+    // 내용 입력란에 드라마 내용 표시
+
+    if (drama.user_id) {
+      // 작성자 정보가 있는 경우 작성자 이름 표시 및 프로필 연결
+      try {
+        const userResponse = await fetch(`http://127.0.0.1:5000/user/${drama.user_id}`); 
+        // 작성자 정보 요청
+        if (userResponse.ok) {
+          const user = await userResponse.json(); // 작성자 정보 파싱
+          const authorSpan = document.getElementById("dramaAuthor"); 
+          // 작성자 표시 요소 가져오기
+          authorSpan.textContent = user.name || "알 수 없음"; // 사용자 이름 설정
+          authorSpan.style.fontWeight = "bold"; // 굵게 표시
+          authorSpan.style.cursor = "pointer"; // 클릭 가능하도록 마우스 커서 변경
+
+          authorSpan.addEventListener("click", () => {
+            window.location.href = `user_profile_readonly.html?id=${user.id}`; 
+            // 클릭 시 해당 사용자 프로필로 이동
+          });
+
+          const storedUser = localStorage.getItem("user"); 
+          // 현재 로그인한 사용자 정보 가져오기
+          const currentUser = storedUser ? JSON.parse(storedUser) : null;
+          const buttonGroup = document.querySelector(".button-group"); 
+          // 수정/삭제 버튼 그룹
+
+          if (!currentUser || currentUser.id !== user.id) {
+            if (buttonGroup) buttonGroup.style.display = "none"; 
+            // 작성자가 아닐 경우 버튼 숨기기
+          }
+        }
+      } catch (err) {
+        console.error("작성자 정보 불러오기 실패:", err); 
+        // 작성자 정보 로드 실패 시 콘솔 출력
+      }
+    }
+
+    if (drama.filename) {
+      const downloadLink = document.getElementById("fileDownload"); 
+      // 파일 다운로드 링크 요소
+      downloadLink.href = `http://127.0.0.1:5000/uploads/${drama.filename}`; 
+      // 실제 파일 경로 설정
+      downloadLink.setAttribute("download", drama.filename); 
+      // 다운로드 속성 설정 (브라우저 다운로드 유도)
+
+      const originalName = drama.filename.substring(drama.filename.indexOf('_') + 1); 
+      // 파일 이름에서 접두사 제거
+      downloadLink.textContent = originalName; // 파일명 표시 텍스트 설정
+
+      downloadLink.style.display = "inline-block"; // 링크 표시
+    }
+  } catch (error) {
+    document.getElementById("dramaTitle").value = "존재하지 않는 드라마"; 
+    // 오류 시 제목 영역에 메시지 표시
+    document.getElementById("dramaContent").value = "해당 드라마 정보가 없습니다."; 
+    // 오류 시 내용 영역에 메시지 표시
+    console.error("드라마 상세 불러오기 오류:", error); // 오류 콘솔 출력
+  }
+}
+// ===================== 드라마 수정 페이지 이동 함수 =====================
+function editDrama() {
+  const params = new URLSearchParams(window.location.search); 
+  // 현재 URL의 쿼리 파라미터 객체 생성
+  const id = params.get("id"); // id 파라미터 값 추출
+  window.location.href = `edit.html?id=${id}`; 
+  // 해당 id를 쿼리로 전달하며 수정 페이지로 이동
+}
+
+
+// ===================== 드라마 수정 내용 저장 함수 =====================
+async function saveEdit() {
+  const params = new URLSearchParams(window.location.search); // URL 파라미터에서 id 추출
+  const id = params.get("id");
+  const newTitle = document.getElementById("editTitle").value.trim(); 
+  // 수정된 제목 값 가져오기
+  const newContent = document.getElementById("editContent").value.trim(); 
+  // 수정된 내용 값 가져오기
+
+  if (!newTitle || !newContent) {
+    alert("제목과 내용을 모두 입력해주세요."); // 필수값 미입력 시 알림
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://127.0.0.1:5000/edit-drama/${id}`, {
+      method: "PUT", // PUT 방식으로 수정 요청
+      headers: { "Content-Type": "application/json" }, // 요청 헤더 설정
+      body: JSON.stringify({ title: newTitle, content: newContent }) 
+      // 수정된 데이터 전송
+    });
+
+    if (response.ok) {
+      alert("수정이 완료되었습니다!");
+      window.location.href = `detail.html?id=${id}`; // 수정된 드라마 상세 페이지로 이동
+    } else {
+      alert("수정 실패");
+    }
+  } catch (error) {
+    console.error("수정 오류:", error);
+    alert("수정 중 오류 발생");
+  }
+}
+
+
+// ===================== 드라마 삭제 함수 =====================
+async function deleteDrama() {
+  const params = new URLSearchParams(window.location.search); // URL에서 id 파라미터 추출
+  const id = params.get("id");
+
+  if (!confirm("정말 삭제하시겠습니까?")) return; // 사용자에게 삭제 여부 재확인
+
+  try {
+    const response = await fetch(`http://127.0.0.1:5000/delete-drama/${id}`, {
+      method: "DELETE", // DELETE 요청으로 드라마 삭제
+      headers: { "Content-Type": "application/json" }
+    });
+
+    if (response.ok) {
+      alert("삭제가 완료되었습니다!");
+      window.location.href = "recommend.html"; // 삭제 후 홈으로 이동
+    } else {
+      const errorMsg = await response.json();
+      alert(`삭제 실패: ${errorMsg.error}`); // 실패 메시지 표시
+    }
+  } catch (error) {
+    console.error("삭제 오류:", error);
+    alert("삭제 중 오류 발생");
+  }
+}
+// ===================== 드라마 검색 함수 =====================
+async function searchDrama() {
+  const query = document.getElementById("searchInput").value.toLowerCase(); 
+  // 입력된 검색어를 소문자로 변환
+  const searchType = document.getElementById("searchType").value; 
+  // 검색 기준 (제목, 내용, 전체 등)
+
+  try {
+    const response = await fetch("http://127.0.0.1:5000/get-dramas"); 
+    // 전체 드라마 목록 요청
+    const dramas = await response.json(); // JSON으로 파싱
+
+    const filtered = dramas.filter((drama) => {
+      if (searchType === "all") {
+        // 제목 또는 내용에 검색어가 포함되어 있는지 확인
+        return drama.title.toLowerCase().includes(query) ||
+               drama.content.toLowerCase().includes(query);
+      } else {
+        // 선택된 항목만 기준으로 검색
+        return drama[searchType].toLowerCase().includes(query);
+      }
+    });
+
+    const list = document.getElementById("dramaList"); // 검색 결과를 출력할 요소
+    list.innerHTML = ""; // 기존 목록 초기화
+
+    filtered.forEach((drama) => {
+      const li = document.createElement("li"); // li 요소 생성
+      li.innerHTML = `<strong>${drama.title}${drama.is_secret ? " 🔐" : ""}</strong>`; 
+      // 제목 표시 (비밀글이면 자물쇠 아이콘)
+      li.style.cursor = "pointer"; // 마우스 포인터 설정
+      li.addEventListener("click", () => {
+        window.location.href = `detail.html?id=${drama.id}`; // 클릭 시 상세페이지 이동
+      });
+      list.appendChild(li); // 목록에 추가
+    });
+  } catch (error) {
+    console.error("검색 실패:", error); // 오류 로그
+  }
+}
+
+
+// ===================== 로그인 함수 =====================
+async function portalLogin() {
+  const id = document.getElementById("loginId").value.trim(); // 아이디 입력값
+  const pw = document.getElementById("loginPw").value.trim(); // 비밀번호 입력값
+
+  if (!id || !pw) {
+    alert("아이디와 비밀번호를 모두 입력해주세요."); // 입력 누락 시 알림
+    return;
+  }
+
+  try {
+    const response = await fetch("http://127.0.0.1:5000/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, password: pw }) // JSON으로 로그인 정보 전송
+    });
+    const result = await response.json(); // 응답 파싱
+
+    if (response.ok) {
+      alert("로그인 성공!");
+      const user = result.user; // 로그인된 사용자 정보
+      localStorage.setItem("user", JSON.stringify(user)); 
+      // 사용자 정보 로컬 스토리지 저장
+      showUserInfo(user); // 사용자 정보 표시 함수 호출
+    } else {
+      alert(`로그인 실패: ${result.error}`);
+    }
+  } catch (error) {
+    console.error("로그인 요청 실패:", error);
+    alert("로그인 중 오류가 발생했습니다.");
+  }
+}
+
+
+// ===================== 로그인한 사용자 정보 표시 함수 =====================
+function showUserInfo(user) {
+  const sideLoginBox = document.getElementById("sideLoginBox"); // 로그인 UI 박스
+  const userInfoBox = document.getElementById("userInfoBox"); 
+  // 로그인 후 사용자 정보 박스
+  const userName = document.getElementById("userName"); // 사용자 이름 표시 요소
+  const profilePic = document.getElementById("profilePic"); // 프로필 이미지 요소
+
+  if (!sideLoginBox || !userInfoBox || !userName || !profilePic) {
+    console.warn("로그인 UI 요소가 없어서 showUserInfo 실행 중단됨");
+    return;
+  }
+
+  sideLoginBox.style.display = "none"; // 로그인 박스 숨김
+  userInfoBox.style.display = "block"; // 사용자 정보 박스 표시
+  userName.textContent = user.name || user.username; // 이름 또는 ID 표시
+
+  if (user.profile_image) {
+    profilePic.src = `http://127.0.0.1:5000/uploads/${user.profile_image}`; 
+    // 프로필 이미지 설정
+  } else {
+    profilePic.src = "";
+    profilePic.style.backgroundColor = "#eee"; // 기본 배경 설정
+  }
+}
+
+
+// ===================== 로그아웃 함수 =====================
+function logout() {
+  localStorage.removeItem("user"); // 사용자 정보 제거
+  window.location.reload(); // 페이지 새로고침
+}
+
+
+// ===================== 프로필 페이지 이동 함수 =====================
+function goProfile() {
+  window.location.href = "user_profile.html"; // 프로필 페이지로 이동
+}
+
+
+// ===================== 회원 탈퇴 함수 =====================
+async function deleteAccount() {
+  const storedUser = localStorage.getItem("user"); // 저장된 사용자 정보 가져오기
+  if (!storedUser) {
+    alert("로그인 정보가 없습니다.");
+    return;
+  }
+
+  const user = JSON.parse(storedUser); // JSON → 객체 변환
+
+  if (!confirm("정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) return;
+
+  try {
+    const response = await fetch(`http://127.0.0.1:5000/delete-user/${user.id}`, {
+      method: "DELETE" // 사용자 삭제 요청
+    });
+    const result = await response.json();
+
+    if (response.ok) {
+      alert("회원탈퇴가 완료되었습니다.");
+      localStorage.removeItem("user");
+      window.location.href = "recommend.html";
+    } else {
+      alert("탈퇴 실패: " + result.error);
+    }
+  } catch (err) {
+    console.error("회원탈퇴 요청 실패:", err);
+    alert("탈퇴 중 오류가 발생했습니다.");
+  }
+}

@@ -22,6 +22,101 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadDetail();
   }
 
+    // user_profile.html 전용 사용자 정보 표시
+    if (window.location.pathname.includes("user_profile.html")) {
+      // DOM이 완전히 로드된 후 실행되는 함수
+      const storedUser = localStorage.getItem("user"); 
+      // 로컬 스토리지에서 사용자 정보 가져오기
+      if (storedUser) {
+        const user = JSON.parse(storedUser); // JSON 문자열을 객체로 변환
+        document.getElementById("userName").textContent = user.name; // 이름 표시
+        document.getElementById("userSchool").textContent = user.school; // 학교 표시
+        document.getElementById("userUsername").textContent = user.username; 
+        // 아이디 표시
+        const profilePic = document.getElementById("profilePic"); // 프로필 이미지 요소
+        if (user.profile_image) {
+          profilePic.src = `http://127.0.0.1:5000/uploads/${user.profile_image}`; // 프로필 이미지 설정
+        } else {
+          profilePic.src = ""; // 이미지가 없을 경우 초기화
+          profilePic.style.backgroundColor = "#eee"; // 기본 배경색 설정
+        }
+      }
+  
+      document.getElementById("editProfileBtn").addEventListener("click", () => {
+        // 프로필 수정 버튼 클릭 이벤트 처리
+        const user = JSON.parse(localStorage.getItem("user")); 
+        // 로컬 스토리지에서 사용자 정보 가져오기
+        if (user && user.id) {
+          window.location.href = `edit_profile.html?id=${user.id}`; 
+          // 프로필 수정 페이지로 이동
+        } else {
+          alert("사용자 정보를 찾을 수 없습니다. 다시 로그인 해주세요."); 
+          // 사용자 정보가 없을 경우 경고 메시지
+        }
+      });
+    }
+
+    if (window.location.pathname.includes("edit_profile.html")) {
+      const params = new URLSearchParams(window.location.search);
+      const userId = params.get("id");
+      if (!userId) {
+        alert("잘못된 접근입니다.");
+        window.location.href = "recommend.html";
+      } else {
+        loadUserEditData(userId);  // ← 이 줄이 있어야 기존 데이터가 불러와집니다!
+      }
+    } 
+    
+    // edit_profile.html 수정 제출 처리
+if (window.location.pathname.includes("edit_profile.html")) {
+  const editForm = document.getElementById("editProfileForm");
+
+  editForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const params = new URLSearchParams(window.location.search);
+    const userId = params.get("id");
+    if (!userId) {
+      alert("잘못된 접근입니다.");
+      window.location.href = "recommend.html";
+      return;
+    }
+
+    const formData = new FormData(editForm);
+
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/update-user/${userId}`, {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert("프로필이 성공적으로 수정되었습니다!");
+
+        // localStorage 업데이트 (중요!)
+        const stored = localStorage.getItem("user");
+        if (stored) {
+          const localUser = JSON.parse(stored);
+          const updatedUser = result.user;
+          localUser.name = updatedUser.name;
+          localUser.school = updatedUser.school;
+          localUser.profile_image = updatedUser.profile_image;
+          localStorage.setItem("user", JSON.stringify(localUser));
+        }
+
+        window.location.href = "user_profile.html";
+      } else {
+        alert("수정 실패: " + result.error);
+      }
+    } catch (err) {
+      console.error("수정 요청 실패:", err);
+      alert("수정 중 오류가 발생했습니다.");
+    }
+  });
+}
+
+
   if (window.location.pathname.includes("edit.html")) {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
@@ -302,7 +397,7 @@ async function loadDetail() {
           const currentUser = storedUser ? JSON.parse(storedUser) : null;
           const buttonGroup = document.querySelector(".button-group");
     
-          if (!currentUser || currentUser.id !== user.id) {
+          if (!currentUser || parseInt(currentUser.id) !== parseInt(user.id)) {
             // 작성자가 아니면 버튼 숨기기
             if (buttonGroup) buttonGroup.style.display = "none";
           }
